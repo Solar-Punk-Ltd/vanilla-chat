@@ -13,6 +13,8 @@
     "chat"
   ],
   "dependencies": {
+    "@ethersphere/bee-js": "^7.1.1",
+    "ethers": "^6.13.2",
     "swarm-decentralized-chat": "file:../swarm-decentralized-chat"
   },
   "devDependencies": {

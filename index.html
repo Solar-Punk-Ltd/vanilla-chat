@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swarm Decentralized Chat - Vanilla Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Popup for generating a keypair -->
+    <div id="keypairPopup" class="popup hidden">
+        <h2>Generate Keypair</h2>
+        <button id="generateKeypairBtn">Generate Keypair</button>
+    </div>
+
+    <!-- Chat Room Entry Screen -->
+    <div id="entryScreen" class="hidden">
+        <h2>Enter Chat</h2>
+        <input type="text" id="nickname" placeholder="Enter chat room">
+        <input type="text" id="topic" placeholder="Enter topic for the chat">
+        <button id="enterChatBtn">Enter Chat</button>
+    </div>
+
+    <!-- Chat UI -->
+    <div id="chatScreen" class="hidden">
+        <div id="messages"></div>
+        <input type="text" id="messageInput" placeholder="Type your message">
+        <button id="sendMessageBtn">Send</button>
+    </div>
+
+    <script type="module" src="dist/app.js"></script>
+</body>
+</html>

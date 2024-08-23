@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@ethersphere/bee-js':
+        specifier: ^7.1.1
+        version: 7.1.1
+      ethers:
+        specifier: ^6.13.2
+        version: 6.13.2
       swarm-decentralized-chat:
         specifier: file:../swarm-decentralized-chat
         version: file:../swarm-decentralized-chat
@@ -24,9 +30,15 @@ importers:
 
 packages:
 
+  '@adraffy/ens-normalize@1.10.1':
+    resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
+
   '@ethersphere/bee-js@6.9.1':
     resolution: {integrity: sha512-aZaoD4Q9BH2jOPU049vIsN3N/RID/CTrXdpMb593PREU9S9PksZkxVPS95sgLWnUsOK1IzW9a8WtkOIjcRZswA==}
     engines: {bee: 1.18.2-759f56f, beeApiVersion: 4.0.0, beeDebugApiVersion: 4.0.0, node: '>=14.0.0', npm: '>=6.0.0'}
+
+  '@ethersphere/bee-js@7.1.1':
+    resolution: {integrity: sha512-QSGDnIPof3lblzYgVj299QwVlZBYFsQqiI/a1G916VAeFcqvCV86LESf0SKweDVoJ9K3WCGPrFHZC/rDj4sxbA==}
 
   '@ethersphere/swarm-cid@0.1.0':
     resolution: {integrity: sha512-n+n+w5RJBPm7CiPf8TIgNFIRMo4bLh5bYpZxHObgCaxFW8WNZ4UGfqg+qjS/jEr+A3Mmp0lugKDvd8GnfFy7JQ==}
@@ -122,6 +134,16 @@ packages:
   '@ethersproject/wordlists@5.7.0':
     resolution: {integrity: sha512-S2TFNJNfHWVHNE6cNDjbVlZ6MgE17MIxMbMg2zv3wn+3XSJGosL1m9ZVv3GXCf/2ymSsQ+hRI5IzoMJTG6aoVA==}
 
+  '@noble/curves@1.2.0':
+    resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
+
+  '@noble/hashes@1.3.2':
+    resolution: {integrity: sha512-MVC8EAQp7MvEcm30KWENFjgR+Mkmf+D189XJTkFIlwohU5hcBbn1ZkKq7KVTi2Hme3PMGF390DaL52beVrIihQ==}
+    engines: {node: '>= 16'}
+
+  '@types/node@18.15.13':
+    resolution: {integrity: sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==}
+
   '@types/node@22.5.0':
     resolution: {integrity: sha512-DkFrJOe+rfdHTqqMg0bSNlGlQ85hSoh2TPzZyhHsXnMtligRWpxUySiyw8FY14ITt24HVCiQPWxS3KO/QlGmWg==}
 
@@ -134,6 +156,9 @@ packages:
 
   aes-js@3.0.0:
     resolution: {integrity: sha512-H7wUZRn8WpTq9jocdxQ2c8x2sKo9ZVmzfRE13GiNJXfp7NcKYEdvl3vspKjXox6RIG2VtaRe4JFvxG4rqp2Zuw==}
+
+  aes-js@4.0.0-beta.5:
+    resolution: {integrity: sha512-G965FqalsNyrPqgEGON7nIx1e/OVENSgiEIzyC63haUMuvNnwIgIjMs52hlTCKhkBny7A2ORNlfY9Zu+jmGk1Q==}
 
   async@2.6.4:
     resolution: {integrity: sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==}
@@ -172,6 +197,9 @@ packages:
 
   cafe-utility@15.0.2:
     resolution: {integrity: sha512-TNKSfA/q/XRd86NwYtF5QImQB8U5n/hKZuWblYFgYW4aveHcSg2RGOfR3+xquXRXF7BCeNoAXe2/snWFKviPzw==}
+
+  cafe-utility@21.5.0:
+    resolution: {integrity: sha512-5u+9cf7fvcH3j2Q3jrd7nA3bUITUBj8b9Arg4eA6almqeA5+dwQA6NKba4GnW6zS9uL1iVCEQqM3z3tQVs2Xjw==}
 
   call-bind@1.0.7:
     resolution: {integrity: sha512-GHTSNSYICQ7scH7sZ+M2rFopRoLh8t2bLSW6BbgrtLsahOIB5iyAVJf9GjWK3cYTDaMj4XdBpM1cA6pIS0Kv2w==}
@@ -235,6 +263,10 @@ packages:
 
   ethers@5.7.2:
     resolution: {integrity: sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==}
+
+  ethers@6.13.2:
+    resolution: {integrity: sha512-9VkriTTed+/27BGuY1s0hf441kqwHJ1wtN2edksEtiRvXx+soxRX3iSXTfFqq2+YwrOqbDoTHjIhQnjJRlzKmg==}
+    engines: {node: '>=14.0.0'}
 
   event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -498,6 +530,9 @@ packages:
   thread-stream@3.1.0:
     resolution: {integrity: sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==}
 
+  tslib@2.4.0:
+    resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
+
   typescript@5.5.4:
     resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
     engines: {node: '>=14.17'}
@@ -532,6 +567,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.17.1:
+    resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   ws@8.18.0:
     resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
     engines: {node: '>=10.0.0'}
@@ -545,6 +592,8 @@ packages:
         optional: true
 
 snapshots:
+
+  '@adraffy/ens-normalize@1.10.1': {}
 
   '@ethersphere/bee-js@6.9.1':
     dependencies:
@@ -564,6 +613,21 @@ snapshots:
       - bufferutil
       - debug
       - domexception
+      - utf-8-validate
+
+  '@ethersphere/bee-js@7.1.1':
+    dependencies:
+      '@ethersphere/swarm-cid': 0.1.0
+      axios: 0.28.1
+      cafe-utility: 21.5.0
+      elliptic: 6.5.7
+      isomorphic-ws: 4.0.1(ws@8.18.0)
+      js-sha3: 0.8.0
+      semver: 7.6.3
+      ws: 8.18.0
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
       - utf-8-validate
 
   '@ethersphere/swarm-cid@0.1.0':
@@ -825,6 +889,14 @@ snapshots:
       '@ethersproject/properties': 5.7.0
       '@ethersproject/strings': 5.7.0
 
+  '@noble/curves@1.2.0':
+    dependencies:
+      '@noble/hashes': 1.3.2
+
+  '@noble/hashes@1.3.2': {}
+
+  '@types/node@18.15.13': {}
+
   '@types/node@22.5.0':
     dependencies:
       undici-types: 6.19.8
@@ -839,6 +911,8 @@ snapshots:
       event-target-shim: 5.0.1
 
   aes-js@3.0.0: {}
+
+  aes-js@4.0.0-beta.5: {}
 
   async@2.6.4:
     dependencies:
@@ -874,6 +948,8 @@ snapshots:
       ieee754: 1.2.1
 
   cafe-utility@15.0.2: {}
+
+  cafe-utility@21.5.0: {}
 
   call-bind@1.0.7:
     dependencies:
@@ -976,6 +1052,19 @@ snapshots:
       '@ethersproject/wallet': 5.7.0
       '@ethersproject/web': 5.7.1
       '@ethersproject/wordlists': 5.7.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  ethers@6.13.2:
+    dependencies:
+      '@adraffy/ens-normalize': 1.10.1
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@types/node': 18.15.13
+      aes-js: 4.0.0-beta.5
+      tslib: 2.4.0
+      ws: 8.17.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -1248,6 +1337,8 @@ snapshots:
     dependencies:
       real-require: 0.2.0
 
+  tslib@2.4.0: {}
+
   typescript@5.5.4: {}
 
   undici-types@6.19.8: {}
@@ -1263,5 +1354,7 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@7.4.6: {}
+
+  ws@8.17.1: {}
 
   ws@8.18.0: {}
