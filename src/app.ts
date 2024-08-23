@@ -1,6 +1,6 @@
 import { EthAddress, EVENTS, MessageData, SwarmChat } from "swarm-decentralized-chat";
 import { ethers } from "ethers";
-import { NodeListElement } from "./types";
+import { Diagnostics, NodeListElement } from "./types";
 import { BatchId } from "@ethersphere/bee-js";
 
 let privKey: string;
@@ -9,6 +9,8 @@ let nickname: string;
 let topic: string;
 let chat: SwarmChat;
 const keyName = "VANILLA_SWARM_CHAT_PRIVKEY";
+let diagnostics: Diagnostics | null = null;
+let diagnosticClock;
 
 // List of Bee nodes, with stamp
 const nodeList: NodeListElement[] = [
@@ -60,6 +62,13 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
     chat.startMessageFetchProcess(topic);
     chat.startUserFetchProcess(topic);
 
+    // Get diagnostic data from SwarmChat instance
+    diagnosticClock = setInterval(() => {
+        diagnostics = chat.getDiagnostics() as Diagnostics;
+        dispayDiagnostics();
+    }, 3000);
+
+
     // Initialize the chat, load users
     await chat.initUsers(topic, ownAddress, selectedNode.stamp)
         .then(() => console.info(`initUsers was successful`))
@@ -73,7 +82,7 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
     // Events
     const { on } = chat.getChatActions();
     on(EVENTS.RECEIVE_MESSAGE, (newMessages) => {
-        const messageDiv = document.getElementById("messages");
+        //const messageDiv = document.getElementById("messages");
         newMessages.forEach((msg: MessageData) => {
             console.debug(`New message: ${msg.message}`);
             addMessage(msg.username, msg.message, msg.address === ownAddress);
@@ -94,7 +103,12 @@ document.getElementById('initBtn')?.addEventListener('click', async () => {
 });
 
 // Handle sending messages
-document.getElementById("sendBtn")?.addEventListener('click', async () => {
+document.getElementById('messageInput')?.addEventListener('keypress', (key: KeyboardEvent) => {
+    if (key.code === 'Enter') sendMessage();
+});
+document.getElementById("sendBtn")?.addEventListener('click', sendMessage);
+
+async function sendMessage() {
     const messageText = (document.getElementById("messageInput") as HTMLInputElement).value;
 
     const messageObj: MessageData = {
@@ -115,7 +129,7 @@ document.getElementById("sendBtn")?.addEventListener('click', async () => {
     .catch((err) => console.error(`Error sending message ${err.error}`));
 
     (document.getElementById("messageInput") as HTMLInputElement ).value = "";
-});
+}
 
 function randomlySelectNode(): NodeListElement {
     const randomIndex = Math.floor(Math.random() * nodeList.length);
@@ -141,4 +155,65 @@ function addMessage(username: string, message: string, isSent: boolean) {
     messageElement.appendChild(timeElement);
 
     document.getElementById('messages')?.appendChild(messageElement);
+}
+
+// Display diagnostics
+function dispayDiagnostics() {
+    console.log("Display Diagnostics")
+    if (!diagnostics) return;
+    (document.getElementById('mInterval')  as HTMLElement).innerHTML 
+        = `<i>Current message fetch interval</i> <strong>${diagnostics.currentMessageFetchInterval} ms </strong>`;
+
+    (document.getElementById('maxParallel')  as HTMLElement).innerHTML 
+        = `<i>Max parallel message fetch</i> <strong>${diagnostics.maxParallel} ms </strong>`;
+
+    let newUsers = "<i>";
+    for (let i = 0; i < diagnostics.newlyResigeredUsers.length; i++) {
+        newUsers += `${diagnostics.newlyResigeredUsers[i].username}`;
+        if (i < diagnostics.newlyResigeredUsers.length-1) newUsers += ', ';
+    }
+    newUsers += '</i>';
+    (document.getElementById('newUsers')  as HTMLElement).innerHTML 
+        = `<i>Newly registered users:</i> <strong>${newUsers}</strong>`;
+
+    (document.getElementById('reqCount')  as HTMLElement).innerHTML
+        = `<i>Total request count:</i>  <strong>${diagnostics.requestCount}</strong>`;
+
+    (document.getElementById('reqTimeAvg')  as HTMLElement).innerHTML
+        = `<i>Average request time:</i>  <strong>${Math.floor(diagnostics.requestTimeAvg.getAverage())} ms </strong>`;
+
+    let userActivity = "";
+    for (const address in diagnostics.userActivityTable) {
+        const actObj = diagnostics.userActivityTable[address as EthAddress];
+        const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+        const timestamp = new Date(actObj.timestamp);
+        const timeString = formatTimeWithLeadingZero(timestamp);
+        userActivity += `
+            <div>
+                <strong>${shortAddress}</strong>: 
+                <span><i>{ timestamp: ${timeString}, readFails: ${actObj.readFails} }</i></span>
+            </div>`;
+    }
+    (document.getElementById('userActivity')  as HTMLElement).innerHTML
+        = `<i>User Activity Table:</i>  ${userActivity}`;
+
+    let users = "";
+    for (let i = 0; i < diagnostics.users.length; i++) {
+        users += `${diagnostics.users[i].username}`;
+        if (diagnostics.users.length-1) users += ", ";
+    }
+    (document.getElementById('users')  as HTMLElement).innerHTML
+        = `<i>Active users:</i>  <strong>${users}</strong>`;
+}
+
+function formatTimeWithLeadingZero(date: Date): string {
+    const formatWithLeadingZero = (n: number) => {
+        return n < 10 ? `0${n}` : `${n}`;
+    }
+
+    const hours = formatWithLeadingZero(date.getHours());
+    const minutes = formatWithLeadingZero(date.getMinutes());
+    const seconds = formatWithLeadingZero(date.getSeconds());
+    
+    return `${hours}:${minutes}:${seconds}`;
 }
