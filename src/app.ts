@@ -89,12 +89,12 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
             newMessages.forEach((msg: MessageData) => {
                 console.debug(`New message: ${msg.message}`);
                 
-                const id = `${msg.address}${msg.timestamp}`;
+                addMessage(msg.username, msg.message, msg.address === ownAddress);
+                /*const id = `${msg.address}${msg.timestamp}`;
                 if (lastThiry.includes(id)) { console.log("return;"); return;}
                 else {
-                    addMessage(msg.username, msg.message, msg.address === ownAddress);
                     lastThiry = addToLastThirty(lastThiry, id);
-                }
+                }*/
 
             });
         });
@@ -125,6 +125,9 @@ document.getElementById("sendBtn")?.addEventListener('click', sendMessage);
 
 // Send message that is on messageInput
 async function sendMessage() {
+    const sendButton = document.getElementById("sendBtn") as HTMLButtonElement;
+    sendButton.disabled = true;  // Disable the button and trigger the fade effect
+
     const messageText = (document.getElementById("messageInput") as HTMLInputElement).value;
 
     const messageObj: MessageData = {
@@ -142,7 +145,8 @@ async function sendMessage() {
         privKey,
     )
     .then((res) => console.info(`Message sent ${res}`))
-    .catch((err) => console.error(`Error sending message ${err.error}`));
+    .catch((err) => console.error(`Error sending message ${err.error}`))
+    .finally(() => { sendButton.disabled = false; });
 
     (document.getElementById("messageInput") as HTMLInputElement ).value = "";
 }
