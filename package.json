@@ -1,0 +1,16 @@
+{
+  "name": "vanilla-chat",
+  "version": "1.0.0",
+  "description": "A chat application, using Vanilla JS, that is using swarm-decentralized-chat",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "swarm",
+    "decentralized",
+    "chat"
+  ],
+  "author": "Peter Ott <Solar Punk>",
+  "license": "GPL-3.0-or-later"
+}
