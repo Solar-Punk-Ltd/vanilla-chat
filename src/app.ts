@@ -76,9 +76,7 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
         const messageDiv = document.getElementById("messages");
         newMessages.forEach((msg: MessageData) => {
             console.debug(`New message: ${msg.message}`);
-            const messageElement = document.createElement("div");
-            messageElement.textContent = `${msg.username}: ${msg.message}`;
-            messageDiv?.appendChild(messageElement);
+            addMessage(msg.username, msg.message, msg.address === ownAddress);
         });
     });
 
@@ -122,4 +120,25 @@ document.getElementById("sendBtn")?.addEventListener('click', async () => {
 function randomlySelectNode(): NodeListElement {
     const randomIndex = Math.floor(Math.random() * nodeList.length);
     return nodeList[randomIndex];
+}
+
+// Add message to UI, with animation
+function addMessage(username: string, message: string, isSent: boolean) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('chat-bubble');
+    messageElement.classList.add(isSent ? 'chat-bubble--sent' : 'chat-bubble--received');
+
+    const usernameElement = document.createElement('span');
+    usernameElement.classList.add('username');
+    usernameElement.textContent = username;
+
+    const timeElement = document.createElement('span');
+    timeElement.classList.add('time');
+    timeElement.textContent = new Date().toLocaleTimeString();
+
+    messageElement.appendChild(usernameElement);
+    messageElement.appendChild(document.createTextNode(message));
+    messageElement.appendChild(timeElement);
+
+    document.getElementById('messages')?.appendChild(messageElement);
 }
