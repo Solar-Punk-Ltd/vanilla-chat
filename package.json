@@ -15,12 +15,23 @@
   "dependencies": {
     "@ethersphere/bee-js": "^7.1.1",
     "ethers": "^6.13.2",
+    "node-polyfill-webpack-plugin": "^4.0.0",
+    "process": "^0.11.10",
     "swarm-decentralized-chat": "file:../swarm-decentralized-chat"
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
+    "crypto-browserify": "^3.12.0",
     "http-server": "^0.12.3",
-    "typescript": "^5.5.4"
+    "path-browserify": "^1.0.1",
+    "stream-browserify": "^3.0.0",
+    "ts-loader": "^9.5.1",
+    "tty-browserify": "^0.0.1",
+    "typescript": "^5.5.4",
+    "util": "^0.12.5",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   },
   "author": "Peter Ott <Solar Punk>",
   "license": "GPL-3.0-or-later"
