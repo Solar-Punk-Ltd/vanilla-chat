@@ -11,6 +11,8 @@ npm-debug.log*
 
 # Build files (if you decide to use a bundler)
 dist/
+!dist/*.html
+!dist/*.css
 build/
 
 # Cache files
