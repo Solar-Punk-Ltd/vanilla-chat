@@ -4,13 +4,22 @@
   "description": "A chat application, using Vanilla JS, that is using swarm-decentralized-chat",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "keywords": [
     "swarm",
     "decentralized",
     "chat"
   ],
+  "dependencies": {
+    "swarm-decentralized-chat": "file:../swarm-decentralized-chat"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "http-server": "^0.12.3",
+    "typescript": "^5.5.4"
+  },
   "author": "Peter Ott <Solar Punk>",
   "license": "GPL-3.0-or-later"
 }
