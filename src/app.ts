@@ -1,6 +1,7 @@
 import { EthAddress, EVENTS, MessageData, SwarmChat } from "swarm-decentralized-chat";
 import { ethers } from "ethers";
 import { Diagnostics, NodeListElement } from "./types";
+import { addMessage, addToLastThirty, displayDiagnostics, randomlySelectNode } from './utils';
 import { BatchId } from "@ethersphere/bee-js";
 
 let privKey: string;
@@ -11,6 +12,7 @@ let chat: SwarmChat;
 const keyName = "VANILLA_SWARM_CHAT_PRIVKEY";
 let diagnostics: Diagnostics | null = null;
 let diagnosticClock;
+let lastThiry: string[];
 
 // List of Bee nodes, with stamp
 const nodeList: NodeListElement[] = [
@@ -20,7 +22,7 @@ const nodeList: NodeListElement[] = [
     //{ url: "http://161.97.125.121:2033" , stamp: "7093b4457e4443090cb2e8765823a601b3c0165372f8b5bf013cc0f48be4e367" as BatchId }
 ];
 
-const selectedNode = randomlySelectNode();
+const selectedNode = randomlySelectNode(nodeList);
 
 chat = new SwarmChat({ 
     url: selectedNode.url, 
@@ -55,42 +57,56 @@ document.getElementById("keypairPopup")?.addEventListener('click', async () => {
 
 // Handle entering the chat room
 document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
-    nickname = (document.getElementById('nickname') as HTMLInputElement).value;
-    topic = (document.getElementById('topic') as HTMLInputElement).value;
+    try {
+        document.getElementById("loadingOverlay")?.classList.remove("hidden");
 
-    // Start polling messages & the Users feed
-    chat.startMessageFetchProcess(topic);
-    chat.startUserFetchProcess(topic);
+        nickname = (document.getElementById('nickname') as HTMLInputElement).value;
+        topic = (document.getElementById('topic') as HTMLInputElement).value;
 
-    // Get diagnostic data from SwarmChat instance
-    diagnosticClock = setInterval(() => {
-        diagnostics = chat.getDiagnostics() as Diagnostics;
-        dispayDiagnostics();
-    }, 3000);
+        // Start polling messages & the Users feed
+        chat.startMessageFetchProcess(topic);
+        chat.startUserFetchProcess(topic);
 
+        // Get diagnostic data from SwarmChat instance
+        diagnosticClock = setInterval(() => {
+            diagnostics = chat.getDiagnostics() as Diagnostics;
+            displayDiagnostics(diagnostics);
+        }, 3000);
 
-    // Initialize the chat, load users
-    await chat.initUsers(topic, ownAddress, selectedNode.stamp)
-        .then(() => console.info(`initUsers was successful`))
-        .catch((err) => console.error(`initUsers error: ${err.error}`));
+        // Load users (first time when entering app)
+        await chat.initUsers(topic, ownAddress, selectedNode.stamp)
+            .then(() => console.info(`initUsers was successful`))
+            .catch((err) => console.error(`initUsers error: ${err.error}`));
 
-    // Connect to chat
-    await chat.registerUser(topic, { participant: ownAddress, key: privKey, stamp: selectedNode.stamp, nickName: nickname })
-        .then(() => console.info(`user registered.`))
-        .catch((err) => console.error(`registerUser error ${err.error}`));
+        // Connect to chat
+        await chat.registerUser(topic, { participant: ownAddress, key: privKey, stamp: selectedNode.stamp, nickName: nickname })
+            .then(() => console.info(`user registered.`))
+            .catch((err) => console.error(`registerUser error ${err.error}`));
 
-    // Events
-    const { on } = chat.getChatActions();
-    on(EVENTS.RECEIVE_MESSAGE, (newMessages) => {
-        //const messageDiv = document.getElementById("messages");
-        newMessages.forEach((msg: MessageData) => {
-            console.debug(`New message: ${msg.message}`);
-            addMessage(msg.username, msg.message, msg.address === ownAddress);
+        // Events
+        const { on } = chat.getChatActions();
+        on(EVENTS.RECEIVE_MESSAGE, (newMessages) => {
+            newMessages.forEach((msg: MessageData) => {
+                console.debug(`New message: ${msg.message}`);
+                
+                const id = `${msg.address}${msg.timestamp}`;
+                if (lastThiry.includes(id)) { console.log("return;"); return;}
+                else {
+                    addMessage(msg.username, msg.message, msg.address === ownAddress);
+                    lastThiry = addToLastThirty(lastThiry, id);
+                }
+
+            });
         });
-    });
 
-    document.getElementById("entryScreen")?.classList.add("hidden");
-    document.getElementById("chatScreen")?.classList.remove("hidden");
+        document.getElementById("entryScreen")?.classList.add("hidden");
+        document.getElementById("chatScreen")?.classList.remove("hidden");
+
+    } catch (err) {
+        console.error(`Error entering chat: ${(err as unknown as Error).message}`);
+    } finally {
+        document.getElementById("loadingOverlay")?.classList.add("hidden");
+    }    
 });
 
 // Handle init
@@ -99,7 +115,6 @@ document.getElementById('initBtn')?.addEventListener('click', async () => {
     chat.initChatRoom(topic, selectedNode.stamp)
         .then((res) => alert("Chat room created!"))
         .catch((err) => alert("Could not create chat room!"));
-
 });
 
 // Handle sending messages
@@ -108,6 +123,7 @@ document.getElementById('messageInput')?.addEventListener('keypress', (key: Keyb
 });
 document.getElementById("sendBtn")?.addEventListener('click', sendMessage);
 
+// Send message that is on messageInput
 async function sendMessage() {
     const messageText = (document.getElementById("messageInput") as HTMLInputElement).value;
 
@@ -129,91 +145,4 @@ async function sendMessage() {
     .catch((err) => console.error(`Error sending message ${err.error}`));
 
     (document.getElementById("messageInput") as HTMLInputElement ).value = "";
-}
-
-function randomlySelectNode(): NodeListElement {
-    const randomIndex = Math.floor(Math.random() * nodeList.length);
-    return nodeList[randomIndex];
-}
-
-// Add message to UI, with animation
-function addMessage(username: string, message: string, isSent: boolean) {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('chat-bubble');
-    messageElement.classList.add(isSent ? 'chat-bubble--sent' : 'chat-bubble--received');
-
-    const usernameElement = document.createElement('span');
-    usernameElement.classList.add('username');
-    usernameElement.textContent = username;
-
-    const timeElement = document.createElement('span');
-    timeElement.classList.add('time');
-    timeElement.textContent = new Date().toLocaleTimeString();
-
-    messageElement.appendChild(usernameElement);
-    messageElement.appendChild(document.createTextNode(message));
-    messageElement.appendChild(timeElement);
-
-    document.getElementById('messages')?.appendChild(messageElement);
-}
-
-// Display diagnostics
-function dispayDiagnostics() {
-    console.log("Display Diagnostics")
-    if (!diagnostics) return;
-    (document.getElementById('mInterval')  as HTMLElement).innerHTML 
-        = `<i>Current message fetch interval</i> <strong>${diagnostics.currentMessageFetchInterval} ms </strong>`;
-
-    (document.getElementById('maxParallel')  as HTMLElement).innerHTML 
-        = `<i>Max parallel message fetch</i> <strong>${diagnostics.maxParallel} ms </strong>`;
-
-    let newUsers = "<i>";
-    for (let i = 0; i < diagnostics.newlyResigeredUsers.length; i++) {
-        newUsers += `${diagnostics.newlyResigeredUsers[i].username}`;
-        if (i < diagnostics.newlyResigeredUsers.length-1) newUsers += ', ';
-    }
-    newUsers += '</i>';
-    (document.getElementById('newUsers')  as HTMLElement).innerHTML 
-        = `<i>Newly registered users:</i> <strong>${newUsers}</strong>`;
-
-    (document.getElementById('reqCount')  as HTMLElement).innerHTML
-        = `<i>Total request count:</i>  <strong>${diagnostics.requestCount}</strong>`;
-
-    (document.getElementById('reqTimeAvg')  as HTMLElement).innerHTML
-        = `<i>Average request time:</i>  <strong>${Math.floor(diagnostics.requestTimeAvg.getAverage())} ms </strong>`;
-
-    let userActivity = "";
-    for (const address in diagnostics.userActivityTable) {
-        const actObj = diagnostics.userActivityTable[address as EthAddress];
-        const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
-        const timestamp = new Date(actObj.timestamp);
-        const timeString = formatTimeWithLeadingZero(timestamp);
-        userActivity += `
-            <div>
-                <strong>${shortAddress}</strong>: 
-                <span><i>{ timestamp: ${timeString}, readFails: ${actObj.readFails} }</i></span>
-            </div>`;
-    }
-    (document.getElementById('userActivity')  as HTMLElement).innerHTML
-        = `<i>User Activity Table:</i>  ${userActivity}`;
-
-    let users = "";
-    for (let i = 0; i < diagnostics.users.length; i++) {
-        users += `${diagnostics.users[i].username}`;
-        if (diagnostics.users.length-1) users += ", ";
-    }
-    (document.getElementById('users')  as HTMLElement).innerHTML
-        = `<i>Active users:</i>  <strong>${users}</strong>`;
-}
-
-function formatTimeWithLeadingZero(date: Date): string {
-    const formatWithLeadingZero = (n: number) => {
-        return n < 10 ? `0${n}` : `${n}`;
-    }
-
-    const hours = formatWithLeadingZero(date.getHours());
-    const minutes = formatWithLeadingZero(date.getMinutes());
-    const seconds = formatWithLeadingZero(date.getSeconds());
-    
-    return `${hours}:${minutes}:${seconds}`;
 }

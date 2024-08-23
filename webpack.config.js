@@ -9,13 +9,14 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
+    extensions: ['.ts', '.js'],
     fallback: {
       "crypto": require.resolve("crypto-browserify"),
       "stream": require.resolve("stream-browserify"),
-      "fs": false,  // `fs` is for file system access, which isn't needed in a browser
+      "fs": false,
       "path": require.resolve("path-browserify"),
       "util": require.resolve("util/"),
-      "worker_threads": false,  // `worker_threads` is Node.js specific, ignore it
+      "worker_threads": false,
       "tty": require.resolve("tty-browserify"),
       "process": require.resolve("process/browser"),
     }
