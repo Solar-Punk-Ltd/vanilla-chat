@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swarm Decentralized Chat - Vanilla Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Popup for generating a keypair -->
+    <div id="keypairPopup" class="popup hidden">
+        <h2>Generate Keypair</h2>
+        <button id="generateKeypairBtn">Generate Keypair</button>
+    </div>
+
+    <!-- Chat Room Entry Screen -->
+    <div id="entryScreen" class="hidden">
+        <h2>Enter Chat</h2>
+        <input type="text" id="nickname" placeholder="Enter your name">
+        <input type="text" id="topic" placeholder="Enter topic for the chat">
+        <button id="enterChatBtn">Enter Chat</button>
+        <button id="initBtn">Init Chat</button>
+    </div>
+
+    <!-- Chat UI -->
+    <div id="chatScreen" class="hidden">
+        <div id="chat-container">
+            <div id="messages"></div>
+            <div id="input-container">
+                <input type="text" id="messageInput" placeholder="Type your message">
+                <button id="sendBtn" class="send-button">Send</button>
+            </div>
+        </div>
+        <div id="diagnostics">
+            <h1>Diagnostics</h1>
+            <div id="mInterval">N/A</div>
+            <div id="maxParallel">N/A</div>
+            <div id="newUsers">N/A</div>
+            <div id="reqCount">N/A</div>
+            <div id="reqTimeAvg">N/A</div>
+            <div id="userActivity">N/A</div>
+            <div id="users">N/A</div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden">
+        <div class="loading-content">
+            <span>Loading...</span>
+        </div>
+    </div>
+      
+    <script type="module" src="bundle.js"></script>
+</body>
+</html>

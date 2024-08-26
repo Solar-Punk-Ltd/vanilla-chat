@@ -16,10 +16,10 @@ let lastThiry: string[];
 
 // List of Bee nodes, with stamp
 const nodeList: NodeListElement[] = [
-    { url: "http://195.88.57.155:1633" ,  stamp: "dc619251ae6d934cf5911c183656c44e4ee522f6f307013aff84d732168b5989" as BatchId },
+    //{ url: "http://195.88.57.155:1633" ,  stamp: "dc619251ae6d934cf5911c183656c44e4ee522f6f307013aff84d732168b5989" as BatchId },
     //{ url: "http://161.97.125.121:1733" , stamp: "1f191134439c1810da0ef41f4decb176b931377f0a66f9eba41a40308a62d8c5" as BatchId },
     //{ url: "http://161.97.125.121:1833" , stamp: "f85df6e7a755ac09494696c94e66c8f03f2c8efbe1cb4b607e44ad6df047e8cc" as BatchId },
-    //{ url: "http://161.97.125.121:2033" , stamp: "7093b4457e4443090cb2e8765823a601b3c0165372f8b5bf013cc0f48be4e367" as BatchId }
+    { url: "http://161.97.125.121:2033" , stamp: "76131fe9b0ecff1a946f0d3dc974d33c0692f0ee39faecaba3ffd5f4b70a2b8a" as BatchId }
 ];
 
 const selectedNode = randomlySelectNode(nodeList);
@@ -90,11 +90,11 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
                 console.debug(`New message: ${msg.message}`);
                 
                 addMessage(msg.username, msg.message, msg.address === ownAddress);
-                /*const id = `${msg.address}${msg.timestamp}`;
+                const id = `${msg.address}${msg.timestamp}`;
                 if (lastThiry.includes(id)) { console.log("return;"); return;}
                 else {
                     lastThiry = addToLastThirty(lastThiry, id);
-                }*/
+                }
 
             });
         });
@@ -126,7 +126,7 @@ document.getElementById("sendBtn")?.addEventListener('click', sendMessage);
 // Send message that is on messageInput
 async function sendMessage() {
     const sendButton = document.getElementById("sendBtn") as HTMLButtonElement;
-    sendButton.disabled = true;  // Disable the button and trigger the fade effect
+    sendButton.disabled = true;
 
     const messageText = (document.getElementById("messageInput") as HTMLInputElement).value;
 

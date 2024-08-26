@@ -10,9 +10,6 @@ npm-debug.log*
 .env
 
 # Build files (if you decide to use a bundler)
-dist/
-!dist/*.html
-!dist/*.css
 build/
 
 # Cache files
