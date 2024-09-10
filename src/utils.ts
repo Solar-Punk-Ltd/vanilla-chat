@@ -39,7 +39,7 @@ export function displayDiagnostics(diagnostics: Diagnostics) {
 
 // ---Max parallel message fetch---
     (document.getElementById('maxParallel')  as HTMLElement).innerHTML 
-        = `<i>Max parallel message fetch</i> <strong>${diagnostics.maxParallel} ms </strong>`;
+        = `<i>Max parallel message fetch</i> <strong>${diagnostics.maxParallel}</strong>`;
 
 // ---Newly registered users---
     let newUsers = "<i>";
