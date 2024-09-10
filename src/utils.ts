@@ -25,12 +25,17 @@ export function addMessage(username: string, message: string, isSent: boolean) {
     messageElement.appendChild(document.createTextNode(message));
     messageElement.appendChild(timeElement);
 
-    document.getElementById('messages')?.appendChild(messageElement);
+    const messagesDiv = document.getElementById('messages')
+    messagesDiv?.appendChild(messageElement);
+
+    messagesDiv?.scrollTo({
+        top: messagesDiv.scrollHeight,
+        behavior: 'smooth'
+    });
 }
 
 // Display diagnostics
 export function displayDiagnostics(diagnostics: Diagnostics) {
-    console.log("Display Diagnostics");
     if (!diagnostics) return;
 
 // ---Message fetch interval---

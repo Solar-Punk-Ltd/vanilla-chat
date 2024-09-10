@@ -89,9 +89,10 @@ body {
     border-radius: 15px;
     color: white;
     max-width: 70%;
+    min-width: 80px;
     word-wrap: break-word;
     position: relative;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
 }
 
 .chat-bubble .username {
@@ -102,6 +103,7 @@ body {
 }
 
 .chat-bubble .time {
+    color: #973602;
     font-size: 0.75em;
     opacity: 0.7;
     position: absolute;
@@ -116,7 +118,7 @@ body {
 
 .chat-bubble--received {
     align-self: flex-start;
-    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    background: linear-gradient(135deg, #FF8C00 0%, #FF4500 100%);
 }
 
 .chat-bubble {

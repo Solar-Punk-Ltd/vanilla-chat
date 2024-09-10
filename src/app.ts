@@ -26,7 +26,7 @@ const selectedNode = randomlySelectNode(nodeList);
 
 chat = new SwarmChat({ 
     url: selectedNode.url, 
-    logLevel: "info", 
+    logLevel: "debug", 
     usersFeedTimeout: 10000
 });
 
@@ -86,15 +86,14 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
         // Events
         const { on } = chat.getChatActions();
         on(EVENTS.RECEIVE_MESSAGE, (newMessages) => {
-            console.log("MESSAGES: ", newMessages)
             newMessages.forEach((msg: MessageData) => {
                 console.debug(`New message: ${msg.message}`);
                 
-                addMessage(msg.username, msg.message, msg.address === ownAddress);
                 const id = `${msg.address}${msg.timestamp}`;
-                console.log("lastThirty: ", lastThiry)
                 if (lastThiry.includes(id)) { console.log("return;"); return;}
                 else {
+                    console.log(`msg.address === ownAddress ${msg.address} === ${ownAddress}`)
+                    addMessage(msg.username, msg.message, msg.address === ownAddress);
                     lastThiry = addToLastThirty(lastThiry, id);
                 }
 
@@ -129,6 +128,14 @@ document.getElementById("sendBtn")?.addEventListener('click', sendMessage);
 async function sendMessage() {
     const sendButton = document.getElementById("sendBtn") as HTMLButtonElement;
     sendButton.disabled = true;
+
+    if (!chat.isRegistered(nickname as EthAddress)) {
+        // Reconnect to chat
+        console.info("Reconnecting to chat...");
+        await chat.registerUser(topic, { participant: ownAddress, key: privKey, stamp: selectedNode.stamp, nickName: nickname })
+            .then(() => console.info(`user registered.`))
+            .catch((err) => console.error(`registerUser error ${err.error}`));
+    }
 
     const messageText = (document.getElementById("messageInput") as HTMLInputElement).value;
 
