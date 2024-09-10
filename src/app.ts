@@ -74,7 +74,7 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
         }, 3000);
 
         // Load users (first time when entering app)
-        await chat.initUsers(topic, ownAddress, selectedNode.stamp)
+        await chat.initUsers(topic)
             .then(() => console.info(`initUsers was successful`))
             .catch((err) => console.error(`initUsers error: ${err.error}`));
 
