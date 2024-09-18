@@ -28,10 +28,15 @@ export function addMessage(username: string, message: string, isSent: boolean) {
     const messagesDiv = document.getElementById('messages')
     messagesDiv?.appendChild(messageElement);
 
-    messagesDiv?.scrollTo({
-        top: messagesDiv.scrollHeight,
-        behavior: 'smooth'
-    });
+    //if (!messagesDiv) return;
+    //const isNearBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop <= messagesDiv.clientHeight + 50;
+    //if (!isNearBottom) {
+        messagesDiv?.scrollTo({ 
+            left: 0,
+            top: messagesDiv.scrollHeight,
+            behavior: "smooth"
+        });
+    //}
 }
 
 // Display diagnostics

@@ -16,17 +16,20 @@ let lastThiry: string[] = [];
 
 // List of Bee nodes, with stamp
 const nodeList: NodeListElement[] = [
-    //{ url: "http://195.88.57.155:1633" ,  stamp: "dc619251ae6d934cf5911c183656c44e4ee522f6f307013aff84d732168b5989" as BatchId },
-    { url: "http://161.97.125.121:1733" , stamp: "e95b0e75ae49fdefffc7f598c5fad5030dedec625190b8346c1793b381559410" as BatchId },
+    //{ url: "http://195.88.57.155:1633" ,  stamp: "6e26e6c31623bfcfa1df4140a98286cd27bcd84c628d6fafd63757ba8d706a6c" as BatchId },
+    { url: "http://161.97.125.121:1733" , stamp: "2df09885bd99f4d57f84c2acff4724c196bc4759db8d47fee130bc57deba4992" as BatchId },
     //{ url: "http://161.97.125.121:1833" , stamp: "f85df6e7a755ac09494696c94e66c8f03f2c8efbe1cb4b607e44ad6df047e8cc" as BatchId },
-    //{ url: "http://161.97.125.121:2033" , stamp: "76131fe9b0ecff1a946f0d3dc974d33c0692f0ee39faecaba3ffd5f4b70a2b8a" as BatchId }
+    //{ url: "http://161.97.125.121:2033" , stamp: "76131fe9b0ecff1a946f0d3dc974d33c0692f0ee39faecaba3ffd5f4b70a2b8a" as BatchId },
+    //{ url: "http://161.97.125.121:2433" , stamp: "5596455deee29df5dc2644ecfc6afb147d7382e07c550e9b10d30ea20b88fcc7" as BatchId }
 ];
 
 const selectedNode = randomlySelectNode(nodeList);
 
-chat = new SwarmChat({ 
-    url: selectedNode.url, 
-    logLevel: "debug", 
+chat = new SwarmChat({
+    url: selectedNode.url,
+    gateway: "86d2154575a43f3bf9922d9c52f0a63daca1cf352d57ef2b5027e38bc8d8f272",
+    gsocResourceId: "abaebeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+    logLevel: "info", 
     usersFeedTimeout: 10000
 });
 
@@ -87,12 +90,10 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
         const { on } = chat.getChatActions();
         on(EVENTS.RECEIVE_MESSAGE, (newMessages) => {
             newMessages.forEach((msg: MessageData) => {
-                console.debug(`New message: ${msg.message}`);
                 
                 const id = `${msg.address}${msg.timestamp}`;
                 if (lastThiry.includes(id)) { console.log("return;"); return;}
                 else {
-                    console.log(`msg.address === ownAddress ${msg.address} === ${ownAddress}`)
                     addMessage(msg.username, msg.message, msg.address === ownAddress);
                     lastThiry = addToLastThirty(lastThiry, id);
                 }
