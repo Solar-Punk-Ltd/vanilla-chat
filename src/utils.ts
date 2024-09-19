@@ -8,7 +8,7 @@ export function randomlySelectNode(nodeList: NodeListElement[]): NodeListElement
 }
 
 // Add message to UI, with animation
-export function addMessage(username: string, message: string, isSent: boolean) {
+export function addMessage(username: string, message: string, isSent: boolean, timestamp: number) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-bubble');
     messageElement.classList.add(isSent ? 'chat-bubble--sent' : 'chat-bubble--received');
@@ -19,7 +19,7 @@ export function addMessage(username: string, message: string, isSent: boolean) {
 
     const timeElement = document.createElement('span');
     timeElement.classList.add('time');
-    timeElement.textContent = new Date().toLocaleTimeString();
+    timeElement.textContent = new Date(timestamp).toLocaleTimeString();
 
     messageElement.appendChild(usernameElement);
     messageElement.appendChild(document.createTextNode(message));
@@ -34,7 +34,7 @@ export function addMessage(username: string, message: string, isSent: boolean) {
         messagesDiv?.scrollTo({ 
             left: 0,
             top: messagesDiv.scrollHeight,
-            behavior: "smooth"
+            /*behavior: "smooth"*/
         });
     //}
 }

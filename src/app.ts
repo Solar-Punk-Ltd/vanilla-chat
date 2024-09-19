@@ -28,9 +28,11 @@ const selectedNode = randomlySelectNode(nodeList);
 chat = new SwarmChat({
     url: selectedNode.url,
     gateway: "86d2154575a43f3bf9922d9c52f0a63daca1cf352d57ef2b5027e38bc8d8f272",
-    gsocResourceId: "abaebeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+    gsocResourceId: "6ebfbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
     logLevel: "info", 
-    usersFeedTimeout: 10000
+    usersFeedTimeout: 10000,
+    messageCheckInterval: 2000,
+    messageFetchMin: 2000,
 });
 
 // Check is the user has a private key in localStorage
@@ -94,7 +96,7 @@ document.getElementById("enterChatBtn")?.addEventListener('click', async () => {
                 const id = `${msg.address}${msg.timestamp}`;
                 if (lastThiry.includes(id)) { console.log("return;"); return;}
                 else {
-                    addMessage(msg.username, msg.message, msg.address === ownAddress);
+                    addMessage(msg.username, msg.message, msg.address === ownAddress, msg.timestamp);
                     lastThiry = addToLastThirty(lastThiry, id);
                 }
 
